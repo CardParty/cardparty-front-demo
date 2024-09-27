@@ -1,0 +1,33 @@
+{
+  "meta":{
+    "name":"Example Deck",
+    "scoreboard":{
+      "state":{
+        "type":"StateRefrence",
+        "ident":"score"
+      },
+      "value":{
+        "type":"Integer",
+        "integer":2000
+      },
+      "type":{
+        "type":"FirstToReach"
+      }
+    },
+    "general":{
+      "max_cards":{
+        "type":"Integer",
+        "integer":0
+      },
+      "max_players":{
+        "type":"Integer",
+        "integer":0
+      }
+    }
+  },
+
+  "tables":[
+    {"ident":"test" }
+  ]
+
+}

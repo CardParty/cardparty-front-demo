@@ -1,0 +1,38 @@
+.players-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #333;    
+    color: #fff;               
+  }
+  
+  .players-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .players-list {
+    flex-grow: 1;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .player-item {
+    padding: 15px;
+    border: 1px solid #444;     
+    border-radius: 5px;
+    background-color: #555;    
+    text-align: center;
+    font-size: 18px;
+  }
+  
+  .player-item.me {
+    background-color: #1e90ff; 
+    font-weight: bold;
+  }

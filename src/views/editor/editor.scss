@@ -1,0 +1,13 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #1e1e1e; // Dark background for the app
+    color: #c7c7c7; // Light grey text for visibility
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; // Common font style
+  }
+
+  .panel, .editor {
+    display: flex;
+    flex: 1;
+  }
