@@ -1,33 +1,79 @@
 {
-  "meta":{
-    "name":"Example Deck",
-    "scoreboard":{
-      "state":{
-        "type":"StateRefrence",
-        "ident":"score"
+  "meta": {
+    "name": "Example Deck",
+    "id": "94ed0e89-f55d-4742-9f40-13abe0198af5",
+    "scoreboard": {
+      "state": {
+        "type": "StateRefrence",
+        "ident": "score"
       },
-      "value":{
-        "type":"Integer",
-        "integer":2000
+      "value": {
+        "type": "Integer",
+        "integer": 2000
       },
-      "type":{
-        "type":"FirstToReach"
+      "cond": {
+        "type": "FirstToReach"
       }
     },
-    "general":{
-      "max_cards":{
-        "type":"Integer",
-        "integer":0
+    "general": {
+      "max_cards": {
+        "type": "Integer",
+        "integer": 0
       },
-      "max_players":{
-        "type":"Integer",
-        "integer":0
+      "max_players": {
+        "type": "Integer",
+        "integer": 0
       }
     }
   },
 
-  "tables":[
-    {"ident":"test" }
+  "tables": [
+    {
+      "ident": "test",
+      "values": [
+        { "value": "Value 1", "tags": ["tag1", "tag2"] },
+        { "value": "Value 2", "tags": ["tag1"] },
+        { "value": "Value 3", "tags": ["tag2"] }
+      ]
+    }
+  ],
+  "states": [
+    {
+      "ident": "score",
+      "value": {
+        "type": "Integer",
+        "integer": 0
+      },
+      "individual": true
+    }
+  ],
+  "cards": [
+    {
+      "segments": [
+        { "segment": "Raw", "string": "This is a random table value: " },
+        { "segment": "Action", "ident": "test" }
+      ],
+      "actions": [
+        {
+          "ident": "test",
+          "action": { "type": "GetFromTable", "table": "test", "tags": [] }
+        }
+      ]
+    },
+    {
+      "segments": [{ "segment": "Raw", "string": "Option showcase" }],
+      "actions": [
+        {
+          "ident": "test",
+          "action": {
+            "type": "UpdateState",
+            "state": "score",
+            "add": true,
+            "selector": { "selector": "Current" }
+          }
+        },
+        { "ident": "option", "action": { "type": "Option", "to_exec": "test" } }
+      ]
+    }
   ]
-
 }

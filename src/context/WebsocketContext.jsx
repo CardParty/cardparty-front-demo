@@ -1,96 +1,99 @@
-import { useState, useEffect, useContext, createContext } from "react"
+import { useState, useEffect, useContext, createContext } from "react";
 import { v4 as uuid } from "uuid";
-import deck from "../mock/deck.json"
+import deck from "../mock/deck.json";
 
 const WebsocketContext = createContext();
 
 const WebsocketContextProvider = ({ children }) => {
-
   const CLIENT_STATES = {
-    NOT_CONNECTED: 'NOT_CONNECTED',
-    IN_LOBBY: 'IN_LOBBY',
-    IN_GAME: 'IN_GAME',
+    NOT_CONNECTED: "NOT_CONNECTED",
+    IN_LOBBY: "IN_LOBBY",
+    IN_GAME: "IN_GAME",
     // Add more states as needed
-  }; 
+  };
 
-  const PacketGenerators = {
-      GetPlayers: () => {
-        return JSON.stringify({
-          packet: "GetPlayers",
-        });
-      },
-      PlayerDoneChoise: (choise) => {     
-        return JSON.stringify({
-          packet: "PlayerChoise",
-          chosen: choise
-        });
-      },
-      setDeck: (deck) => { 
-        return JSON.stringify({
-          packet: "SetDeck",
-          deck: deck
-        });
-      },
-      PlayerDone: () => {
-        return JSON.stringify({
-          packet: "PlayerDone"
-        });
-      },
-      CloseSession: () => { 
-        return JSON.stringify({
-          packet: "CloseSession"
-        });
-      }
-    }
+  const PacketGenerator = {
+    GetPlayers: () => {
+      return JSON.stringify({
+        packet: "GetPlayers",
+      });
+    },
+    PlayerDoneChoise: (choise) => {
+      return JSON.stringify({
+        packet: "PlayerChoise",
+        chosen: choise,
+      });
+    },
+    setDeck: (deck) => {
+      return JSON.stringify({
+        packet: "SetDeck",
+        deck: deck,
+      });
+    },
+    PlayerDone: () => {
+      return JSON.stringify({
+        packet: "PlayerDone",
+      });
+    },
+    CloseSession: () => {
+      return JSON.stringify({
+        packet: "CloseSession",
+      });
+    },
+  };
 
-  const [players, setPlayers] = useState([])
-  const [websocketConn, setWebsocketConn] = useState(null)
+  const [players, setPlayers] = useState([]);
+  const [websocketConn, setWebsocketConn] = useState(null);
   const [dataListeners, setDataListeners] = useState([]);
-  const [userId, setUserId] = useState("")
-  const [username, setUsername] = useState("")
-  const [clientState, setClientState] = useState("notConnected")
-  const [connectedSessionCode, setConnectedSessionCode] = useState("")
-  const [decks, setDecks] = useState([deck])
-  const [decisions, setDecisions] = useState([])
-  const [ chosie, setChoise ] = useState(null)
-
-  const API_URL = "http://localhost:8080"
+  const [userId, setUserId] = useState("");
+  const [username, setUsername] = useState("");
+  const [clientState, setClientState] = useState(CLIENT_STATES.NOT_CONNECTED);
+  const [connectedSessionCode, setConnectedSessionCode] = useState("");
+  const [decks, setDecks] = useState([deck, { meta: { name: "Deck 2" } }]);
+  const [selectedDeck, setSelectedDeck] = useState(null);
+  const [decisions, setDecisions] = useState([]);
+  const [chosie, setChoise] = useState(null);
+  const [isHost, setIsHost] = useState(false);
+  const API_URL = "http://localhost:8080";
 
   // load username from localstorage or create a default one if it does not exist
   useEffect(() => {
     const lsUsername = localStorage.getItem("username");
-    const defaultUsername = "User"
+    const defaultUsername = "User";
     if (lsUsername) {
-      setUsername(lsUsername)
+      setUsername(lsUsername);
     } else {
-      localStorage.setItem("username", defaultUsername)
-      setUsername(defaultUsername)
+      localStorage.setItem("username", defaultUsername);
+      setUsername(defaultUsername);
     }
-  }, [])
+  }, []);
 
+  useEffect(() => {
+    if (selectedDeck && isHost) {
+      sendMessage(PacketGenerator.setDeck(selectedDeck));
+    }
+  }, [selectedDeck]);
 
-  useEffect(()=>{
-    
-  }, [chosie])
+  useEffect(() => {}, [chosie]);
 
   // load userId from localstorage or create a new one if it does not exist
   useEffect(() => {
     const lsUserId = localStorage.getItem("userId");
     if (lsUserId) {
-      setUserId(lsUserId)
+      setUserId(lsUserId);
     } else {
       const id = uuid();
-      localStorage.setItem("userId", id)
-      setUserId(id)
+      localStorage.setItem("userId", id);
+      setUserId(id);
     }
-  }, [])
+  }, []);
 
   // update localStorage username if username changes
   useEffect(() => {
     if (username !== "") {
-      localStorage.setItem("username", username)
+      localStorage.setItem("username", username);
     }
-  }, [username])
+  }, [username]);
 
   useEffect(() => {
     return () => {
@@ -102,19 +105,24 @@ const WebsocketContextProvider = ({ children }) => {
   }, [websocketConn]);
 
   const joinSession = async (sessionCode) => {
-    if (!websocketConn && clientState === "notConnected" && username !== "" && userId !== "") {
+    if (
+      !websocketConn &&
+      clientState === CLIENT_STATES.NOT_CONNECTED &&
+      username !== "" &&
+      userId !== ""
+    ) {
       try {
-        let sessionId = ""
+        let sessionId = "";
         const resp = await fetch(`${API_URL}/game/unwrap_session_code`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(sessionCode)
-        })
+          body: JSON.stringify(sessionCode),
+        });
 
         if (!resp.ok) {
-          throw new Error("No session under provided session code")
+          throw new Error("No session under provided session code");
         } else {
           sessionId = await resp.json();
         }
@@ -122,29 +130,29 @@ const WebsocketContextProvider = ({ children }) => {
         if (sessionId !== "") {
           const ws = new WebSocket(
             `${API_URL}/game/join?session_id=${sessionId}&user_id=${userId}&username=${username}`
-          )
+          );
 
           ws.onopen = () => {
             setWebsocketConn(ws);
-            setClientState("InLobby")
+            setClientState(CLIENT_STATES.IN_LOBBY);
             console.log("WebSocket connection established");
-          }
+          };
 
           ws.onerror = (error) => {
             console.error("WebSocket connection error:", error);
-            setClientState("notConnected")
-          }
+            setClientState(CLIENT_STATES.NOT_CONNECTED);
+          };
 
           initializeWebSocketHandlers(ws);
         } else {
-          throw new Error("Failed to unwrap Session Code")
+          throw new Error("Failed to unwrap Session Code");
         }
       } catch (error) {
         console.error("Error joining session:", error);
-        setClientState("notConnected")
+        setClientState(CLIENT_STATES.NOT_CONNECTED);
       }
     }
-  }
+  };
 
   const createSession = async () => {
     try {
@@ -168,18 +176,19 @@ const WebsocketContextProvider = ({ children }) => {
       }
 
       const { id: sessionId, code: sessionCode } = await response.json();
-      setConnectedSessionCode(sessionCode)
+      setConnectedSessionCode(sessionCode);
 
       if (sessionCode !== "") {
-        await joinSession(sessionCode)
+        await joinSession(sessionCode);
+        setIsHost(true);
       } else {
-        throw new Error("No session code to connect with")
+        throw new Error("No session code to connect with");
       }
     } catch (error) {
-      console.error("Failed to create a game", error)
-      setClientState("notConnected")
+      console.error("Failed to create a game", error);
+      setClientState(CLIENT_STATES.NOT_CONNECTED);
     }
-  }
+  };
 
   const messageHandlers = {
     PlayerUpdateOk: (msg) => {
@@ -207,75 +216,87 @@ const WebsocketContextProvider = ({ children }) => {
     ws.onmessage = (event) => {
       try {
         let msg = JSON.parse(event.data);
-        console.log("Got packet:", msg)
+        console.log("Got packet:", msg);
         handleMessage(msg);
       } catch (error) {
         console.error("Error parsing message:", error);
       }
-    }
+    };
 
     ws.onclose = () => {
-      console.warn("Websocket connection closed")
-      setWebsocketConn(null)
-      setClientState("notConnected")
-      setPlayers([])
-      setConnectedSessionCode("")
-    }
+      console.warn("Websocket connection closed");
+      setWebsocketConn(null);
+      setClientState(CLIENT_STATES.NOT_CONNECTED);
+      setPlayers([]);
+      setConnectedSessionCode("");
+      setIsHost(false); // Reset isHost state on WebSocket close
+    };
 
     ws.onerror = (error) => {
-      console.error("Websocket Error:", error)
-    }
-  }
+      console.error("Websocket Error:", error);
+    };
+  };
 
   const sendMessage = (message) => {
     if (websocketConn && websocketConn.readyState === WebSocket.OPEN) {
-      websocketConn.send(JSON.stringify(message));
+      websocketConn.send(message);
     } else {
       console.error("WebSocket is not open. Unable to send message.");
     }
-  }
+  };
 
-  return (    
-    <WebsocketContext.Provider value={{
-      players: {
-        set: setPlayers,
-        get: players
-      },
-      username: {
-        set: setUsername,
-        get: username
-      },
-      userId: {
-        set: setUserId,
-        get: userId
-      },
-      clientState: {
-        set: setClientState,
-        get: clientState
-      },
-      connectedSessionCode: {
-        set: setConnectedSessionCode,
-        get: connectedSessionCode
-      },
-      decks:{
-        set: setDecks,
-        get: decks
-      },
-      decisions:{
-        set: setDecisions,
-        get: decisions
-      },
-      chosie:{
-        set: setChoise,
-        get: chosie
-      },
-      joinSession,
-      createSession,
-      sendMessage
-    }}>
+  return (
+    <WebsocketContext.Provider
+      value={{
+        players: {
+          set: setPlayers,
+          get: players,
+        },
+        username: {
+          set: setUsername,
+          get: username,
+        },
+        userId: {
+          set: setUserId,
+          get: userId,
+        },
+        clientState: {
+          set: setClientState,
+          get: clientState,
+        },
+        connectedSessionCode: {
+          set: setConnectedSessionCode,
+          get: connectedSessionCode,
+        },
+        decks: {
+          set: setDecks,
+          get: decks,
+        },
+        decisions: {
+          set: setDecisions,
+          get: decisions,
+        },
+        chosie: {
+          set: setChoise,
+          get: chosie,
+        },
+        selectedDeck: {
+          set: setSelectedDeck,
+          get: selectedDeck,
+        },
+        isHost: {
+          set: setIsHost,
+          get: isHost,
+        },
+        joinSession,
+        createSession,
+        sendMessage,
+        PacketGenerator,
+      }}
+    >
       {children}
     </WebsocketContext.Provider>
-  )
-}
+  );
+};
 
 export { WebsocketContextProvider, WebsocketContext };
