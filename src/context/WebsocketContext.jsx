@@ -24,8 +24,8 @@ const WebsocketContextProvider = ({ children }) => {
     },
     PlayerDoneChoise: (choise) => {
       return JSON.stringify({
-        packet: "PlayerChoise",
-        chosen: choise,
+        packet: "PlayerDoneChoise",
+        chosen: choise.id,
       });
     },
     setDeck: (deck) => {
@@ -205,16 +205,20 @@ const WebsocketContextProvider = ({ children }) => {
 
   const messageHandlers = {
     PlayerUpdateOk: (msg) => {
+      console.log("PlayerUpdate", msg);
       setPlayers(msg.players);
     },
     GetPlayersOk: (msg) => {
+      console.log("GetPlayersOk", msg);
       setPlayers(msg.players);
     },
     CardResultOk: (msg) => {
-      setDecisions(msg.state_operations);
-      setToDisplay(msg.display);
+      console.log("CardResultOk", msg);
+      setDecisions(msg.card.state_options);
+      setToDisplay(msg.card.text);
     },
     UpdateStateOk: (msg) => {
+      console.log("UpdateState", msg);
       setGameState(msg.bundle);
     },
   };
@@ -223,6 +227,7 @@ const WebsocketContextProvider = ({ children }) => {
     try {
       const handler = messageHandlers[msg.packet];
       if (handler) {
+        console.log("Handling Packet:", msg);
         handler(msg);
       } else {
         console.warn("Unknown Packet:", msg.packet);
@@ -259,6 +264,7 @@ const WebsocketContextProvider = ({ children }) => {
 
   const sendMessage = (message) => {
     if (websocketConn && websocketConn.readyState === WebSocket.OPEN) {
+      console.info("Sending message:", message);
       websocketConn.send(message);
     } else {
       console.error("WebSocket is not open. Unable to send message.");
@@ -337,6 +343,7 @@ const WebsocketContextProvider = ({ children }) => {
         navigateEditor,
         navigateGame,
         navigateLobby,
+        decisionsArray: decisions,
         PacketGenerator,
       }}
     >
