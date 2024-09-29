@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, createContext } from "react";
 import { v4 as uuid } from "uuid";
 import deck from "../mock/deck.json";
 import game_state from "../mock/game_state.json";
-
+import animals from "../mock/animals.json";
 import { useNavigate } from "react-router-dom";
 
 const WebsocketContext = createContext();
@@ -53,7 +53,7 @@ const WebsocketContextProvider = ({ children }) => {
   const [username, setUsername] = useState("");
   const [clientState, setClientState] = useState(CLIENT_STATES.NOT_CONNECTED);
   const [connectedSessionCode, setConnectedSessionCode] = useState("");
-  const [decks, setDecks] = useState([deck, { meta: { name: "Deck 2" } }]);
+  const [decks, setDecks] = useState([deck, animals]);
   const [selectedDeck, setSelectedDeck] = useState(null);
 
   const [decisions, setDecisions] = useState([]); // options to display

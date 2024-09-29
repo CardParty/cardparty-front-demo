@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "deck_name": "Animal Generator Deck",
+    "id": "94ed0e89-f55d-4742-9f40-13abe0198af5",
+    "scoreboard": {
+      "state": {
+        "type": "StateRefrence",
+        "ident": "score"
+      },
+      "value": {
+        "type": "Integer",
+        "integer": 2000
+      },
+      "cond": {
+        "type": "Biggest"
+      }
+    },
+    "max_cards": 0,
+    "max_players": 0
+  },
+  "tables": [
+    {
+      "ident": "colors",
+      "values": [
+        {
+          "value": "Red",
+          "tags": ["primary"]
+        },
+        {
+          "value": "Yellow",
+          "tags": ["primary"]
+        },
+        {
+          "value": "Blue",
+          "tags": ["primary"]
+        },
+        {
+          "value": "Green",
+          "tags": ["mixed"]
+        }
+      ]
+    },
+    {
+      "ident": "animals",
+      "values": [
+        {
+          "value": "Cat",
+          "tags": ["small"]
+        },
+        {
+          "value": "Dog",
+          "tags": ["small"]
+        },
+        {
+          "value": "Cow",
+          "tags": ["big"]
+        },
+        {
+          "value": "Sheep",
+          "tags": ["big"]
+        }
+      ]
+    }
+  ],
+  "states": [
+    {
+      "ident": "score",
+      "value": {
+        "type": "Integer",
+        "integer": 0
+      },
+      "individual": true
+    }
+  ],
+  "cards": [
+    {
+      "segments": [
+        {
+          "segment": "Raw",
+          "string": "[Random animal generator] Color: "
+        },
+        {
+          "segment": "Action",
+          "ident": "color"
+        },
+        {
+          "segment": "Raw",
+          "string": "Animal: "
+        },
+        {
+          "segment": "Action",
+          "ident": "animal"
+        }
+      ],
+      "actions": [
+        {
+          "ident": "color",
+          "type": "GetFromTable",
+          "table": "colors",
+          "tags": []
+        },
+        {
+          "ident": "animal",
+          "type": "GetFromTable",
+          "table": "animals",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "segments": [
+        {
+          "segment": "Raw",
+          "string": "[Small animal generator] Color: "
+        },
+        {
+          "segment": "Action",
+          "ident": "color"
+        },
+        {
+          "segment": "Raw",
+          "string": "Animal: "
+        },
+        {
+          "segment": "Action",
+          "ident": "animal"
+        }
+      ],
+      "actions": [
+        {
+          "ident": "color",
+          "type": "GetFromTable",
+          "table": "colors",
+          "tags": []
+        },
+        {
+          "ident": "animal",
+          "type": "GetFromTable",
+          "table": "animals",
+          "tags": ["small"]
+        }
+      ]
+    },
+    {
+      "segments": [
+        {
+          "segment": "Raw",
+          "string": "[Big animal generator] Color: "
+        },
+        {
+          "segment": "Action",
+          "ident": "color"
+        },
+        {
+          "segment": "Raw",
+          "string": "Animal: "
+        },
+        {
+          "segment": "Action",
+          "ident": "animal"
+        }
+      ],
+      "actions": [
+        {
+          "ident": "color",
+          "type": "GetFromTable",
+          "table": "colors",
+          "tags": []
+        },
+        {
+          "ident": "animal",
+          "type": "GetFromTable",
+          "table": "animals",
+          "tags": ["big"]
+        }
+      ]
+    },
+    {
+      "segments": [
+        {
+          "segment": "Raw",
+          "string": "Options, showcase"
+        }
+      ],
+      "actions": [
+        {
+          "ident": "test",
+          "type": "UpdateState",
+          "state": "score",
+          "value": {
+            "type": "Integer",
+            "integer": 100
+          },
+          "add": true,
+          "selector": {
+            "selector": "Current"
+          }
+        },
+        {
+          "ident": "option",
+          "type": "Option",
+          "display": "Option1",
+          "actions": ["test"]
+        },
+        {
+          "ident": "option",
+          "type": "Option",
+          "display": "Option3",
+          "actions": ["test"]
+        },
+        {
+          "ident": "option",
+          "type": "Option",
+          "display": "Option2",
+          "actions": ["test"]
+        }
+      ]
+    }
+  ]
+}
