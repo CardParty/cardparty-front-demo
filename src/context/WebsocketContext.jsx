@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import { v4 as uuid } from "uuid";
 import deck from "../mock/deck.json";
+import game_state from "../mock/game_state.json";
+
+import { useNavigate } from "react-router-dom";
 
 const WebsocketContext = createContext();
-
 const WebsocketContextProvider = ({ children }) => {
   const CLIENT_STATES = {
     NOT_CONNECTED: "NOT_CONNECTED",
@@ -11,6 +13,8 @@ const WebsocketContextProvider = ({ children }) => {
     IN_GAME: "IN_GAME",
     // Add more states as needed
   };
+
+  const navigate = useNavigate();
 
   const PacketGenerator = {
     GetPlayers: () => {
@@ -51,10 +55,20 @@ const WebsocketContextProvider = ({ children }) => {
   const [connectedSessionCode, setConnectedSessionCode] = useState("");
   const [decks, setDecks] = useState([deck, { meta: { name: "Deck 2" } }]);
   const [selectedDeck, setSelectedDeck] = useState(null);
-  const [decisions, setDecisions] = useState([]);
-  const [chosie, setChoise] = useState(null);
+
+  const [decisions, setDecisions] = useState([]); // options to display
+  const [chosie, setChoise] = useState(null); // id of the option that was chosen
+  const [toDisplay, setToDisplay] = useState(""); // text to display on card
+
   const [isHost, setIsHost] = useState(false);
+
+  const [gameState, setGameState] = useState(game_state);
+
   const API_URL = "http://localhost:8080";
+
+  // [ {id:"uuid", display:"fhfhfhhfhfhfh"}]
+  ``;
+  // <button onClick()=>{setChoise(id)}>fhfhfhfhfhfhf<button/>
 
   // load username from localstorage or create a default one if it does not exist
   useEffect(() => {
@@ -73,8 +87,6 @@ const WebsocketContextProvider = ({ children }) => {
       sendMessage(PacketGenerator.setDeck(selectedDeck));
     }
   }, [selectedDeck]);
-
-  useEffect(() => {}, [chosie]);
 
   // load userId from localstorage or create a new one if it does not exist
   useEffect(() => {
@@ -95,14 +107,15 @@ const WebsocketContextProvider = ({ children }) => {
     }
   }, [username]);
 
-  useEffect(() => {
-    return () => {
-      if (websocketConn) {
-        websocketConn.close();
-        console.log("WebSocket closed on component unmount");
-      }
-    };
-  }, [websocketConn]);
+  const nextPlayer = () => {
+    sendMessage(PacketGenerator.PlayerDone());
+  };
+
+  const doChoise = (id) => {
+    setChoise(id);
+    sendMessage(PacketGenerator.PlayerDoneChoise(id));
+    setChoise(null);
+  };
 
   const joinSession = async (sessionCode) => {
     if (
@@ -192,10 +205,17 @@ const WebsocketContextProvider = ({ children }) => {
 
   const messageHandlers = {
     PlayerUpdateOk: (msg) => {
-      setPlayers(JSON.parse(msg.players));
+      setPlayers(msg.players);
     },
     GetPlayersOk: (msg) => {
-      setPlayers(JSON.parse(msg.players));
+      setPlayers(msg.players);
+    },
+    CardResultOk: (msg) => {
+      setDecisions(msg.state_operations);
+      setToDisplay(msg.display);
+    },
+    UpdateStateOk: (msg) => {
+      setGameState(msg.bundle);
     },
   };
 
@@ -245,6 +265,19 @@ const WebsocketContextProvider = ({ children }) => {
     }
   };
 
+  const navigateGame = () => {
+    if (websocketConn && websocketConn.readyState === WebSocket.OPEN) {
+      navigate("/game");
+      sendMessage(PacketGenerator.PlayerDone());
+    }
+  };
+  const navigateEditor = () => {
+    navigate("/editor");
+  };
+  const navigateLobby = () => {
+    navigate("/");
+  };
+
   return (
     <WebsocketContext.Provider
       value={{
@@ -288,9 +321,22 @@ const WebsocketContextProvider = ({ children }) => {
           set: setIsHost,
           get: isHost,
         },
+        toDisplay: {
+          set: setToDisplay,
+          get: toDisplay,
+        },
+        gameState: {
+          set: setGameState,
+          get: gameState,
+        },
         joinSession,
         createSession,
         sendMessage,
+        doChoise,
+        nextPlayer,
+        navigateEditor,
+        navigateGame,
+        navigateLobby,
         PacketGenerator,
       }}
     >

@@ -1,0 +1,24 @@
+{
+  "scoreboard": {
+    "ident": "Score",
+    "data": [
+      {
+        "username": "Player1",
+        "value": 400,
+        "position": 1
+      },
+      {
+        "username": "Player2",
+        "value": 150,
+        "position": 3
+      },
+      {
+        "username": "Player3",
+        "value": 300,
+        "position": 2
+      }
+    ]
+  },
+  "current_idx": 1,
+  "states": [{ "ident": "SomeState", "value": 400 }]
+}

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "name": "Example Deck",
+    "deck_name": "Example Deck",
     "id": "94ed0e89-f55d-4742-9f40-13abe0198af5",
     "scoreboard": {
       "state": {
@@ -12,28 +12,28 @@
         "integer": 2000
       },
       "cond": {
-        "type": "FirstToReach"
+        "type": "Biggest"
       }
     },
-    "general": {
-      "max_cards": {
-        "type": "Integer",
-        "integer": 0
-      },
-      "max_players": {
-        "type": "Integer",
-        "integer": 0
-      }
-    }
+    "max_cards": 0,
+    "max_players": 0
   },
-
   "tables": [
     {
       "ident": "test",
       "values": [
-        { "value": "Value 1", "tags": ["tag1", "tag2"] },
-        { "value": "Value 2", "tags": ["tag1"] },
-        { "value": "Value 3", "tags": ["tag2"] }
+        {
+          "value": "Value 1",
+          "tags": ["tag1", "tag2"]
+        },
+        {
+          "value": "Value 2",
+          "tags": ["tag1"]
+        },
+        {
+          "value": "Value 3",
+          "tags": ["tag2"]
+        }
       ]
     }
   ],
@@ -50,29 +50,51 @@
   "cards": [
     {
       "segments": [
-        { "segment": "Raw", "string": "This is a random table value: " },
-        { "segment": "Action", "ident": "test" }
+        {
+          "segment": "Raw",
+          "string": "This is a random table value: "
+        },
+        {
+          "segment": "Action",
+          "ident": "test"
+        }
       ],
       "actions": [
         {
           "ident": "test",
-          "action": { "type": "GetFromTable", "table": "test", "tags": [] }
+          "type": "GetFromTable",
+          "table": "test",
+          "tags": []
         }
       ]
     },
     {
-      "segments": [{ "segment": "Raw", "string": "Option showcase" }],
+      "segments": [
+        {
+          "segment": "Raw",
+          "string": "Option showcase"
+        }
+      ],
       "actions": [
         {
           "ident": "test",
-          "action": {
-            "type": "UpdateState",
-            "state": "score",
-            "add": true,
-            "selector": { "selector": "Current" }
+          "type": "UpdateState",
+          "state": "score",
+          "value": {
+            "type": "Integer",
+            "integer": 100
+          },
+          "add": true,
+          "selector": {
+            "selector": "Current"
           }
         },
-        { "ident": "option", "action": { "type": "Option", "to_exec": "test" } }
+        {
+          "ident": "option",
+          "type": "Option",
+          "display": "bomba",
+          "actions": ["test"]
+        }
       ]
     }
   ]

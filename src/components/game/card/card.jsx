@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
+import { WebsocketContext } from "../../../context/WebsocketContext";
 
-import "./style.scss";
+const Card = () => {
+  const {
+    toDisplay: { get: toDisplay },
+  } = useContext(WebsocketContext);
 
-const Card = (props) => {
-  const { text, textCallback } = props;
   return (
     <div className={`Card`}>
       <textarea
@@ -11,10 +13,8 @@ const Card = (props) => {
         id="card"
         cols={30}
         rows={40}
-        value={text}
-        onChange={(e) => {
-          textCallback(e.target.value);
-        }}
+        value={toDisplay}
+        readOnly
       ></textarea>
     </div>
   );

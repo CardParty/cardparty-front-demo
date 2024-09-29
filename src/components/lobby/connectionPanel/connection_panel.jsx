@@ -1,4 +1,4 @@
-import './connection_panel.scss';
+import "./connection_panel.scss";
 import React, { useContext, useState } from "react";
 import { WebsocketContext } from "../../../context/WebsocketContext";
 
@@ -7,8 +7,13 @@ const ConnectionPanel = () => {
 
   const {
     username: { get: username, set: setUsername },
+    connectedSessionCode: {
+      set: setConnectedSessionCode,
+      get: connectedSessionCode,
+    },
     createSession,
-    joinSession
+    joinSession,
+    navigateGame,
   } = useContext(WebsocketContext);
 
   const handleCreateSession = () => {
@@ -32,17 +37,21 @@ const ConnectionPanel = () => {
           />
           <input
             type="text"
-            placeholder="Game ID"
+            placeholder="Game Code"
             value={gameId}
             onChange={(e) => setGameId(e.target.value)}
             className="session-input"
           />
+          <span>Session Code: {connectedSessionCode}</span>
           <div className="session-id-section">
             <button className="new-button" onClick={handleCreateSession}>
               New
             </button>
             <button className="join-button" onClick={handleJoinSession}>
               Join
+            </button>
+            <button className="start-button" onClick={navigateGame}>
+              Start
             </button>
           </div>
         </div>
