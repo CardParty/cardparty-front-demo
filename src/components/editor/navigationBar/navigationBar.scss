@@ -1,33 +1,32 @@
 .deck {
-    background-color: #1e1e1e;
-    border: 1px solid #333;
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  
-    input {
-      background-color: #2a2a2a;
-      border: 1px solid #444;
-      color: #ccc;
-      padding: 5px;
-      border-radius: 5px;
-      width: 200px;
-    }
-  
-    button {
-      background-color: #1a73e8;
-      border: none;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-  
-      &:hover {
-        background-color: darken(#1a73e8, 10%);
-      }
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  input {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    width: 200px;
+  }
+
+  button {
+    background-color: #1a73e8;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: scale-color(#1a73e8, $lightness: -10%);
     }
   }
-  
+}
