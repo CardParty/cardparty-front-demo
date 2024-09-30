@@ -1,0 +1,90 @@
+.debug-console {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  max-width: 90%;
+  height: 500px;
+  max-height: 90%;
+}
+
+.debug-console h2 {
+  margin-bottom: 10px;
+}
+
+.debug-info {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+
+.debug-info p {
+  margin: 5px 0;
+  color: black;
+}
+
+.console-messages {
+  flex: 1;
+  background-color: #000;
+  color: #0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+  overflow-y: auto;
+  font-family: monospace;
+  border: 1px solid #333;
+}
+
+.console-message {
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.console-message.log {
+  color: #0f0;
+}
+
+.console-message.error {
+  color: #f00;
+}
+
+.console-message.warn {
+  color: #ff0;
+}
+
+.console-message.info {
+  color: #0ff;
+}
+
+.timestamp {
+  color: #888;
+  margin-right: 5px;
+}
+
+.console-summary {
+  display: flex;
+  align-items: center;
+}
+
+.console-summary:hover {
+  background-color: #222;
+}
+
+.object-preview {
+  color: #fff;
+  font-style: italic;
+}
+
+.console-details {
+  background-color: #111;
+  padding: 5px;
+  margin-top: 5px;
+  border-left: 2px solid #444;
+  overflow-x: auto;
+}
+
+.console-details pre {
+  color: #fff;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 0;
+}

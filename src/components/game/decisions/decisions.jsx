@@ -12,7 +12,7 @@ const Decisions = () => {
           <h3>Choose!</h3>
           <ul>
             {decisionsArray.map((decision, index) => (
-              <li key={index} onClick={() => doChoice(decision)}>
+              <li key={index} onClick={() => doChoise(decision)}>
                 {decision.display}
               </li>
             ))}
