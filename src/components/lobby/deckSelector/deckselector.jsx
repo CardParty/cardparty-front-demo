@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { WebsocketContext } from "../../../context/WebsocketContext";
+import './deckselector.scss'
 
 const DeckSelector = () => {
   const {

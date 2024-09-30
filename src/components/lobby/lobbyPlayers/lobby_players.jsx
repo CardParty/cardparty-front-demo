@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { WebsocketContext } from "../../../context/WebsocketContext";
-import "./lobby_Players.scss";
+import "./lobby_players.scss";
 
 const LobbyPlayers = () => {
   const { players, username } = useContext(WebsocketContext);

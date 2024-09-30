@@ -1,43 +1,30 @@
-.decks-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+.decks {
+    background-color: #232323;
     padding: 20px;
-    box-sizing: border-box;
-    background-color: #222;     
-    color: #fff;                 
-  }
+    border-radius: 8px;
+    margin: 20px;
   
-  .decks-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
+    h1, h3 {
+      text-align: center;
+    }
   }
   
   .deck-list {
-    flex-grow: 1;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 10px;
+    justify-content: center;
   }
   
   .deck-item {
-    padding: 15px;
-    border: 1px solid #555;     
-    border-radius: 5px;
-    background-color: #444;     
-    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+    transition: background-color 0.3s;
   
-  .deck-item.selected {
-    background-color: #1e90ff;   
-    
-  }
-  
-  .deck-item:hover {
-    background-color: #555;    
-    
+    &.selected {
+      background-color: #575757;
+    }
   }
   

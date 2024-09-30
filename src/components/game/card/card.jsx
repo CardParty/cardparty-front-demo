@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { WebsocketContext } from "../../../context/WebsocketContext";
+import './card.scss';
 
 const Card = () => {
   const {
@@ -7,15 +8,17 @@ const Card = () => {
   } = useContext(WebsocketContext);
 
   return (
-    <div className={`Card`}>
-      <textarea
-        name="card"
-        id="card"
-        cols={30}
-        rows={40}
-        value={toDisplay}
-        readOnly
-      ></textarea>
+    <div className="container"> 
+      <div className="card">
+        <textarea
+          name="card"
+          id="card"
+          cols={30}
+          rows={40}
+          value={toDisplay}
+          readOnly
+        ></textarea>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { WebsocketContext } from "../../../context/WebsocketContext";
+import './scoreboard.scss'
 
 const Scoreboard = () => {
   const {
@@ -13,7 +14,7 @@ const Scoreboard = () => {
   }
 
   return (
-    <div>
+    <div className="scoreboard-container scoreboard">
       <h1>Scoreboard</h1>
       <table>
         <thead>
@@ -28,7 +29,7 @@ const Scoreboard = () => {
             <tr key={index}>
               <td>{player.position}</td>
               <td>{player.username}</td>
-              <td>{player.value}</td>
+              <td>{player.score}</td>
             </tr>
           ))}
         </tbody>

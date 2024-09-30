@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 
 import Editor from "./views/editor/editor";
 import Lobby from "./views/lobby/lobby";
