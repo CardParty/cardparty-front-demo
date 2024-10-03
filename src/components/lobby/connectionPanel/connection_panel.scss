@@ -15,11 +15,10 @@
   .session-form {
     display: grid;
     gap: 10px;
+    text-align: center;
+    justify-content: center;
   }
   
-  .username-input, .session-input {
-    width: 100%;
-  }
   
   .session-id-section {
     display: flex;
