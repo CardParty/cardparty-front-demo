@@ -56,9 +56,9 @@ const WebsocketContextProvider = ({ children }) => {
   const [decks, setDecks] = useState([deck, animals]);
   const [selectedDeck, setSelectedDeck] = useState(null);
 
-  const [decisions, setDecisions] = useState([]); 
-  const [chosie, setChoise] = useState(null); 
-  const [toDisplay, setToDisplay] = useState(""); 
+  const [decisions, setDecisions] = useState([]);
+  const [chosie, setChoise] = useState(null);
+  const [toDisplay, setToDisplay] = useState({});
 
   const [isHost, setIsHost] = useState(false);
 
@@ -73,8 +73,8 @@ const WebsocketContextProvider = ({ children }) => {
     const timestamp = now.toLocaleTimeString();
     const newLog = {
       timestamp,
-      type, 
-      messages, 
+      type,
+      messages,
     };
     setLogs((prevLogs) => [...prevLogs, newLog]);
   };
@@ -182,7 +182,7 @@ const WebsocketContextProvider = ({ children }) => {
 
   const createSession = async () => {
     try {
-      if (userId === "" || username === "" && selectedDeck != null) {
+      if (userId === "" || (username === "" && selectedDeck != null)) {
         throw new Error("UserId or Username is empty");
       }
 
@@ -314,6 +314,10 @@ const WebsocketContextProvider = ({ children }) => {
     sendMessage(JSON.stringify({ packet: "FinishGame" }));
   };
 
+  const dump = () => {
+    sendMessage("dump");
+  };
+
   return (
     <WebsocketContext.Provider
       value={{
@@ -381,6 +385,7 @@ const WebsocketContextProvider = ({ children }) => {
         CLIENT_STATES,
         startGame,
         endGame,
+        dump,
       }}
     >
       {children}

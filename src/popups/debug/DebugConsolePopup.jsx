@@ -11,6 +11,7 @@ const DebugConsolePopup = ({ isOpen, onClose }) => {
     websocketConn,
     clientState,
     CLIENT_STATES,
+    dump,
   } = useContext(WebsocketContext);
 
   const [expandedIndices, setExpandedIndices] = useState([]);
@@ -28,7 +29,9 @@ const DebugConsolePopup = ({ isOpen, onClose }) => {
       ? "Connected"
       : "Not Connected";
 
-  const deckName = selectedDeck.get ? selectedDeck.get.name : "No Deck Selected";
+  const deckName = selectedDeck.get
+    ? selectedDeck.get.name
+    : "No Deck Selected";
 
   const playerNames =
     players.get && players.get.length > 0
@@ -53,6 +56,13 @@ const DebugConsolePopup = ({ isOpen, onClose }) => {
           <p>
             <strong>ClientState:</strong> {clientState}
           </p>
+          <button
+            onClick={() => {
+              dump();
+            }}
+          >
+            Dump
+          </button>
         </div>
 
         <div className="console-messages">
