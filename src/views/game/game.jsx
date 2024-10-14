@@ -6,6 +6,7 @@ import InfoIsland from "../../components/game/infoIsland/infoIsland";
 import './game.scss';
 import DebugConsolePopup from '../../popups/debug/DebugConsolePopup';
 import SessionJoin from '../../popups/sessionJoin/sessionJoin';
+import logo from './../../../public/image.png'
 
 const Game = () => {
   const [isConsoleOpen, setIsConsoleOpen] = useState(false);
@@ -36,7 +37,7 @@ const Game = () => {
       <DebugConsolePopup isOpen={isConsoleOpen} onClose={closeConsole} />
       <SessionJoin isOpen={isSessionJoinOpen} onClose={closeSessionJoin} />
       <header className="game-header">
-        <h1>Game Title</h1>
+      <img src={logo} alt="Logo" style={{ width: '240px', height: '110px', display: 'block', margin: '0 auto' }} />
       </header>
       <div className="game-body">
         <div className="left-column">

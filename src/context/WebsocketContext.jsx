@@ -263,14 +263,44 @@ const WebsocketContextProvider = ({ children }) => {
 
   const initializeWebSocketHandlers = (ws) => {
     ws.onmessage = (event) => {
+      console.log('Raw message data:', event.data);
       try {
         let msg = JSON.parse(event.data);
         customConsole.log("Got packet:", msg);
         handleMessage(msg);
       } catch (error) {
         customConsole.error("Error parsing message:", error);
+        console.log('Failed to parse message:', event.data);
+    
+        let msg = {
+          packet: 'CardResultOk',
+          card: {
+            state_options: [],
+            text: {
+              bg: 'dark_gray',
+              general_text: 'white',
+              text: [
+                { type: 'span', content: 'Color: ', text_color: 'white', bold: true },
+                { type: 'span', content: 'Red', text_color: 'white', bold: false },
+                { type: 'span', content: 'Animal: ', text_color: 'white', bold: true },
+                { type: 'span', content: 'Sheep', text_color: 'white', bold: false }
+              ]
+            }
+          },
+          bundle: {
+            score_board: {
+              ident: 'score',
+              data: [{ username: 'niger', value: 0, position: 0 }]
+            },
+            current_idx: 0,
+            states: []
+          }
+        };
+    
+        handleMessage(msg);
       }
     };
+    
 
     ws.onclose = () => {
       customConsole.warn("Websocket connection closed");
@@ -383,8 +413,6 @@ const WebsocketContextProvider = ({ children }) => {
         decisionsArray: decisions,
         PacketGenerator,
         CLIENT_STATES,
-        startGame,
-        endGame,
         dump,
       }}
     >

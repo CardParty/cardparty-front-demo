@@ -74,10 +74,17 @@
   ],
   "cards": [
     {
+      "bg": "dark_gray",
+      "general_text": "white",
       "segments": [
         {
           "segment": "Raw",
-          "string": "[Random animal generator] Color: "
+          "string": {
+            "type": "span",
+            "content": "Color: ",
+            "text_color": "white",
+            "bold": true
+          }
         },
         {
           "segment": "Action",
@@ -85,7 +92,12 @@
         },
         {
           "segment": "Raw",
-          "string": "Animal: "
+          "string": {
+            "type": "span",
+            "content": "Animal: ",
+            "text_color": "white",
+            "bold": true
+          }
         },
         {
           "segment": "Action",
@@ -108,10 +120,17 @@
       ]
     },
     {
+      "bg": "dark_gray",
+      "general_text": "white",
       "segments": [
         {
           "segment": "Raw",
-          "string": "[Small animal generator] Color: "
+          "string": {
+            "type": "span",
+            "content": "Color: ",
+            "text_color": "white",
+            "bold": true
+          }
         },
         {
           "segment": "Action",
@@ -119,7 +138,12 @@
         },
         {
           "segment": "Raw",
-          "string": "Animal: "
+          "string": {
+            "type": "span",
+            "content": "Animal: ",
+            "text_color": "white",
+            "bold": true
+          }
         },
         {
           "segment": "Action",
@@ -142,10 +166,17 @@
       ]
     },
     {
+      "bg": "dark_gray",
+      "general_text": "white",
       "segments": [
         {
           "segment": "Raw",
-          "string": "[Big animal generator] Color: "
+          "string": {
+            "type": "span",
+            "content": "Color: ",
+            "text_color": "white",
+            "bold": true
+          }
         },
         {
           "segment": "Action",
@@ -153,7 +184,12 @@
         },
         {
           "segment": "Raw",
-          "string": "Animal: "
+          "string": {
+            "type": "span",
+            "content": "Animal: ",
+            "text_color": "white",
+            "bold": true
+          }
         },
         {
           "segment": "Action",
@@ -176,10 +212,17 @@
       ]
     },
     {
+      "bg": "dark_gray",
+      "general_text": "white",
       "segments": [
         {
           "segment": "Raw",
-          "string": "Options, showcase"
+          "string": {
+            "type": "header",
+            "content": "Option Showcase: ",
+            "text_color": "white",
+            "bold": true
+          }
         }
       ],
       "actions": [
